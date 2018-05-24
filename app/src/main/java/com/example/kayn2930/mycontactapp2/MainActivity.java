@@ -3,18 +3,35 @@ package com.example.kayn2930.mycontactapp2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    DataBaseHelper myDb;
-
+    DatabaseHelper myDb;
+    EditText editName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myDb = new DataBaseHelper(this);
+        editName = findViewById(R.id.editText_name);
+
+        myDb = new DatabaseHelper(this);
         Log.d("MyContactApp", "MainActivity: instantiated myDb");
+    }
+
+    public void addData(View view){
+        Log.d("MyContactApp", "MainActivity: Add contact button pressed");
+
+        boolean isInserted = myDb.insertData(editName.getText().toString(), editName.getText().toString(), editName.getText().toString());
+        if(isInserted == true){
+            Toast.makeText(MainActivity.this, "Success - contact inserted", Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(MainActivity.this, "Failure - contact not inserted", Toast.LENGTH_LONG).show();
+        }
     }
 }
