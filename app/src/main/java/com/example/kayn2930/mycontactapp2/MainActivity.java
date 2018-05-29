@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         StringBuffer buffer = new StringBuffer();
         while (res.moveToNext()){
             buffer.append("Name: " + res.getString(1));
-            buffer.append(" /// Address: " + res.getString(2));
-            buffer.append(" /// Phone: " + res.getString(3));
+            buffer.append(" /// Phone: " + res.getString(2));
+            buffer.append(" /// Address: " + res.getString(3));
             buffer.append("\n\n");
         }
         showMessage("Data", buffer.toString());
@@ -68,5 +68,31 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.show();
+    }
+    public static final String EXTRA_MESSAGE = "com.example.noahkay.mycontactapp2.MESSAGE";
+    public void searchRecord(View view){
+        Log.d("MyContactApp", "MainActivity: launching SearchActivity");
+        android.content.Intent intent = new android.content.Intent(this, SearchActivity.class);
+        Cursor res = myDb.getAllData();
+        Log.d("MyContactApp", "MainActivity: viewData: received cursor");
+
+        if (res.getCount()==0){
+            showMessage("Error", "No data found in database");
+            return;
+        }
+
+        StringBuffer buffer = new StringBuffer();
+        while (res.moveToNext()){
+            if(res.getString(1).equals(editName.getText().toString()) ){
+                buffer.append("Name: " + res.getString(1));
+                buffer.append(" /// Phone: " + res.getString(2));
+                buffer.append(" /// Address: " + res.getString(3));
+                buffer.append("\n\n");
+            }
+
+        }
+        showMessage("Data", buffer.toString());
+        intent.putExtra(EXTRA_MESSAGE, buffer.toString());
+        startActivity(intent);
     }
 }
