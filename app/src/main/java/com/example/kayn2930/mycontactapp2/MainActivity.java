@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
+        boolean contactsFound = false;
         while (res.moveToNext()){
             if(res.getString(1).equals(editName.getText().toString()) ){
                 Log.d("MyContactApp", "MainActivity: searchRecord: adding data");
@@ -90,10 +90,11 @@ public class MainActivity extends AppCompatActivity {
                 buffer.append(" /// Phone: " + res.getString(2));
                 buffer.append(" /// Address: " + res.getString(3));
                 buffer.append("\n\n");
+                contactsFound = true;
             }
 
         }
-        if (buffer.length()==0) buffer.append("No contacts found");
+        if (!contactsFound) buffer.append("No contacts found");
         showMessage("Data", buffer.toString());
         intent.putExtra(EXTRA_MESSAGE, buffer.toString());
         startActivity(intent);
